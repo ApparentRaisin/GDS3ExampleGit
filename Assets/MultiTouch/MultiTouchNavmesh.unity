@@ -906,17 +906,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 756040393}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f93dc0459dd26e1478ed0cd2d6b59e8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 111dbe0490c04fe34bf3fb1893ad8a19, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NavMeshControllerTouch
-  cam: {fileID: 961739752}
-  agents:
-  - {fileID: 843346911}
-  - {fileID: 406288229}
-  - {fileID: 1115816395}
-  - {fileID: 1892935702}
-  - {fileID: 1477703355}
-  - {fileID: 1570830848}
+  m_EditorClassIdentifier: Assembly-CSharp::MultiTouch
 --- !u!1 &843346910
 GameObject:
   m_ObjectHideFlags: 0

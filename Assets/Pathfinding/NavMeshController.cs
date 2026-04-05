@@ -1,42 +1,29 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-using System.Collections.Generic;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.InputSystem;
 
 public class NavMeshController : MonoBehaviour
 {
-    [SerializeField] Camera cam;
-    [SerializeField] List<NavMeshAgent> agents = new List<NavMeshAgent>();
-    InputAction clickAction;
-    InputAction mousePos;
+    public NavMeshAgent agent;
+    InputAction mousePosition;
+    Camera mainCamera;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        clickAction = InputSystem.actions.FindAction("Click");
-        mousePos = InputSystem.actions.FindAction("Point");
-        EnhancedTouchSupport.Enable();
+        mousePosition = InputSystem.actions.FindAction("Point");
+        mainCamera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        foreach (UnityEngine.InputSystem.EnhancedTouch.Touch toucheEvent in UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches)
+        Vector2 mousePos = mousePosition.ReadValue<Vector2>();
+        RaycastHit hit;
+        if(Physics.Raycast(mainCamera.ScreenPointToRay(mousePos), out hit))
         {
-            if(toucheEvent.phase == UnityEngine.InputSystem.TouchPhase.Began)
-            {
-                Vector2 screenPosition = toucheEvent.finger.screenPosition;
-                RaycastHit hit;
-                if(Physics.Raycast(cam.ScreenPointToRay(screenPosition), out hit))
-                {
-                    foreach(NavMeshAgent agent in agents)
-                    {
-                        agent.SetDestination(hit.point);
-                    }                
-                }
-            }
-            
+            agent.destination = hit.point;
         }
+        
     }
 }
