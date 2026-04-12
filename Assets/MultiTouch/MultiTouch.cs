@@ -15,7 +15,7 @@ public class MultiTouch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach(UnityEngine.InputSystem.EnhancedTouch.Touch touches in UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches)
+        foreach(UnityEngine.InputSystem.EnhancedTouch.Touch touches in UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches) //evil
         {
             if(touches.phase == UnityEngine.InputSystem.TouchPhase.Began)
             {
