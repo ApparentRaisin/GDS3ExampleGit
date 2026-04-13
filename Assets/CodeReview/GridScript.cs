@@ -1,12 +1,17 @@
 using UnityEngine;
 using System.Collections.Generic;
+
+//Custom Grid class to store slotobject data xy position
 [System.Serializable]
 public class Grid
 {
     public int width {get;}
     public int height {get;}
     public Vector2 scale {get;}
+    
     List<SlotObject> slots;
+    
+    //World Space position
     Vector2 position;
 
     public Vector2 GetPosition()
@@ -18,11 +23,15 @@ public class Grid
     {
         position = newPosition;
     }
+
+
     public Grid(int width, int height, Vector2 scale, Vector2 position)
     {
         this.height = height;
         this.width = width;
         this.position = position;
+        //Create list of empty slot objects
+        //List is used here instead of Array because of added functionality
         slots = new List<SlotObject>();
         for(int i = 0; i < width*height; i++)
         {
@@ -32,6 +41,7 @@ public class Grid
         this.scale = scale;
     }
 
+    //N dimensional array to XY position helper functions
     public int XYtoN(int x, int y)
     {
         return x + y * width;
@@ -53,8 +63,11 @@ public class Grid
         return slots;
     }
 
+    
     public int WorldToSlot(Vector2 wordPos)
     {
+        //Get world position and transform to grid position
+        // floor functions quantize world positon
         int x = Mathf.FloorToInt((wordPos.x+(scale.x/2) - position.x)/scale.x);
         int y = Mathf.FloorToInt((wordPos.y+(scale.y/2) - position.y)/scale.y);
         int n = -1;
@@ -67,6 +80,8 @@ public class Grid
 
         return n;
     }
+
+    //Reverse of above
     public int WorldToSlot(Vector2 wordPos, out SlotObject slotObject)
     {
         int x = Mathf.FloorToInt((wordPos.x+(scale.x/2) - position.x)/scale.x);
@@ -104,6 +119,10 @@ public class Grid
     {
         
     }
+
+    //Helper funciton
+    //Allows a set of deleage funcitons to be run on all objects in the grid
+    //to be used for things like updating slot infomraiton, or sharing changes made to each slot object
     public delegate void UpdateFunction(SlotObject slotObject, int n);
     public void UpdateBoard(UpdateFunction function)
     {
