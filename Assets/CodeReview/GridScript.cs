@@ -1,17 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-//Custom Grid class to store slotobject data xy position
+//Class script to control grids - grids hold slot objects
+//Includes all helper functions
+//All functions regarding grids and controlling grids should be handled by this class
 [System.Serializable]
 public class Grid
 {
     public int width {get;}
     public int height {get;}
+
+    //The scale of individual slots in the grid
     public Vector2 scale {get;}
     
     List<SlotObject> slots;
     
-    //World Space position
+    //World Space position of the grid
     Vector2 position;
 
     public Vector2 GetPosition()
@@ -23,7 +27,6 @@ public class Grid
     {
         position = newPosition;
     }
-
 
     public Grid(int width, int height, Vector2 scale, Vector2 position)
     {
@@ -41,11 +44,15 @@ public class Grid
         this.scale = scale;
     }
 
-    //N dimensional array to XY position helper functions
+    //Helper functions to move between differnt space
+    
+    //Fucntion to go fomr 2D to 1D array
     public int XYtoN(int x, int y)
     {
         return x + y * width;
     }
+
+    //Function to go from 1D to 2D array
     public Vector2Int NtoXY(int n)
     {
         return new Vector2Int(n%width, n/width);
@@ -62,7 +69,6 @@ public class Grid
     {
         return slots;
     }
-
     
     public int WorldToSlot(Vector2 wordPos)
     {
@@ -81,7 +87,6 @@ public class Grid
         return n;
     }
 
-    //Reverse of above
     public int WorldToSlot(Vector2 wordPos, out SlotObject slotObject)
     {
         int x = Mathf.FloorToInt((wordPos.x+(scale.x/2) - position.x)/scale.x);
@@ -120,9 +125,8 @@ public class Grid
         
     }
 
-    //Helper funciton
-    //Allows a set of deleage funcitons to be run on all objects in the grid
-    //to be used for things like updating slot infomraiton, or sharing changes made to each slot object
+    //Delegate fucntion to enable anonymous functions to be run on all slot objects present in grid
+    //To be used to run funciton/checks on all slot objects
     public delegate void UpdateFunction(SlotObject slotObject, int n);
     public void UpdateBoard(UpdateFunction function)
     {
